@@ -4,7 +4,7 @@
 - `sudo systemctl disable emulationstation`
 - `sudo systemctl enable getty@tty1`
 - `sudo apt remove emulationstation-go2 emulators-64bit-go2 emulators-32bit-go2`
-- `sudo apt install lightdm ubuntu-mate-desktop`
+- `sudo apt install sddm lxqt openbox`
 - Add /etc/X11/xorg.conf
 ```
 Section "Device"
@@ -25,21 +25,15 @@ Section "Monitor"
 	Option		"Rotate" "left"
 EndSection
 ```
-- Add /etc/lightdm/lightdm.conf
+- Add /etc/sddm.conf
 ```
-[SeatDefaults]
-user-session=mate
-greeter-session=slick-greeter
-autologin-user=odroid
-```
-- Disable compositing to improve desktop performance
-```
-gsettings set org.mate.Marco.general compositing-manager false
+[Autologin]
+Session=lxqt.desktop
+User=odroid
 ```
 - Enable remote desktop sharing with XRDP
 ```
-sudo apt-get install xrdp
-sudo apt-get install mate-core mate-desktop-environment mate-notification-daemon
+sudo apt-get install xrdp lxqt-session lxsession
 sudo sed -i.bak '/fi/a #xrdp multiple users configuration \n mate-session \n' /etc/xrdp/startwm.sh
 sudo adduser xrdp ssl-cert  
 sudo ufw allow 3389/tcp
