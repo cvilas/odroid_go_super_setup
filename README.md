@@ -30,6 +30,7 @@ EndSection
 [SeatDefaults]
 user-session=mate
 greeter-session=slick-greeter
+autologin-user=odroid
 ```
 - Disable compositing to improve desktop performance
 ```
