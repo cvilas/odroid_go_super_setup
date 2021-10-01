@@ -45,6 +45,10 @@ sudo ufw allow 3389/tcp
 sudo /etc/init.d/xrdp restart
 ```
 - Install KRDC client on my desktop to access the desktop
+- Remove what we don't need
+```
+sudo apt remove thunderbird firefox "libreoffice-*"
+```
 
 ## References
 - ubuntu desktop: https://forum.odroid.com/viewtopic.php?t=42196
