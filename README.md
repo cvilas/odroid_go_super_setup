@@ -31,20 +31,22 @@ EndSection
 Session=lxqt.desktop
 User=odroid
 ```
-- Enable remote desktop sharing with XRDP
-```
-sudo apt-get install xrdp lxqt-session lxsession
-sudo sed -i.bak '/fi/a #xrdp multiple users configuration \n mate-session \n' /etc/xrdp/startwm.sh
-sudo adduser xrdp ssl-cert  
-sudo ufw allow 3389/tcp
-sudo /etc/init.d/xrdp restart
-```
-- Install KRDC client on my desktop to access the desktop
 - Remove what we don't need
 ```
 sudo apt remove thunderbird firefox "libreoffice-*"
 ```
-
+## To boot directly into a GUI application without desktop environment
+- Create a user defined session with a custom `.desktop` file in `/usr/share/xsessions` as follows:
+```
+[Desktop Entry]
+Name=My Custom Session
+Comment=Run my custom GUI 
+Exec=/path/to/custom/gui
+TryExec=
+Icon=
+Type=Application
+```
+- 
 ## References
 - ubuntu desktop: https://forum.odroid.com/viewtopic.php?t=42196
-- xrdp: https://www.e2enetworks.com/help/knowledge-base/how-to-install-remote-desktop-xrdp-on-ubuntu-18-04/
+- Booting into a GUI directly: https://askubuntu.com/questions/23932/how-do-i-replace-the-desktop-by-an-application
