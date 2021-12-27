@@ -2,30 +2,39 @@
 
 ## Instructions to boot directly into a GUI application without desktop environment
 
-- Get the OS installation from here: https://wiki.odroid.com/odroid_go_super/start 
-- `sudo systemctl disable emulationstation`
-- `sudo systemctl enable getty@tty1`
-- `sudo apt remove emulationstation-go2 emulators-64bit-go2 emulators-32bit-go2`
+### Setup OS
+- Prepare SD card with v2.2 of the OS by following instructions here: https://wiki.odroid.com/odroid_go_advance/make_sd_card.
+- Boot up and login via ssh.
+- Remove the games emulator that Odroid OS comes with
+```
+sudo systemctl disable emulationstation
+sudo systemctl enable getty@tty1
+sudo apt remove emulationstation-go2 emulators-64bit-go2 emulators-32bit-go2
+```
+- Upgrade OS to Ubuntu 20.04
+```
+sudo do-release-upgrade
+```
+- Install a minimal set of packages to run an X session and some admin tools
 - `sudo apt install sddm openbox unclutter network-manager ip-tools`
-
-- Add /etc/X11/xorg.conf
+- Edit `/etc/X11/xorg.conf`:
 ```
 Section "Device"
-	Identifier	"ODROID-GO"
-	Driver		"modesetting"
-	Option		"AccelMethod" "none"
-	Option		"PageFlip" "off"
+        Identifier      "ODROID-GO"
+        Driver          "modesetting"
+        Option          "AccelMethod" "none"
+        Option          "PageFlip" "off"
 EndSection
 
 Section "Screen"
-	Identifier	"Default Screen"
-	Device		"ODROID-GO"
-	Monitor		"Default Monitor"
+        Identifier      "Default Screen"
+        Device          "ODROID-GO"
+        Monitor         "Default Monitor"
 EndSection
 
 Section "Monitor"
-	Identifier	"Default Monitor"
-	Option		"Rotate" "left"
+        Identifier      "Default Monitor"
+        Option          "Rotate" "left"
 EndSection
 ```
 - Remove what we don't need
@@ -37,20 +46,20 @@ sudo apt remove thunderbird firefox "libreoffice-*"
 journalctl --vacuum-time=2d
 ```
 - Disable WiFi power saving. Open `/etc/NetworkManager/conf.d/default-wifi-powersave-on.conf` and
-ensure powersave option is set to `3`.
+  ensure powersave option is set to `3`.
 ```
 [connection]
 wifi.powersave = 3
 ```
-- Disable screen blanking. Create `/home/odroid/noblank.sh` as follows:
+- Disable screen blanking. Create `/home/odroid/programs/noblank.sh` as follows:
 ```
 #!/bin/bash
 xset dpms 0 0 0 && xset -dpms  && xset s off && xset s noblank
 ```
-- Make it executable: `chmod +x /home/odroid/noblank.sh`.
+- Make it executable: `chmod +x /home/odroid/programs/noblank.sh`.
 - To quit xscreensaver on joystick events, download joystickwake
 ```
-cd ~
+cd /home/odroid/programs
 git clone https://github.com/foresto/joystickwake.git
 ```
 - Create script to run in graphical session, called `/home/odroid/my_application_xsession.sh`. This 
